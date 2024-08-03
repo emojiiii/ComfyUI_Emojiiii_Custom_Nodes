@@ -18,7 +18,7 @@ class MultiTextEncode:
 
     RETURN_TYPES = ("CONDITIONING",)
     FUNCTION = "multi_text_set_area"
-    CATEGORY = "Example"
+    CATEGORY = "emojiiii"
 
     def multi_text_set_area(self, clip, text, pre_text='',app_text=''):
         # 换行符分割
