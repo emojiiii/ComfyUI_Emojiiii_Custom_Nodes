@@ -1,7 +1,5 @@
 import torch
-import sys
 
-sys.path.append("..")
 from kolors_core import chatglm3_text_encode
 
 class KolorsMultiTextEncode:

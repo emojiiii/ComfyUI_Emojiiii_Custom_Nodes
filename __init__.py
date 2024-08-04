@@ -1,5 +1,5 @@
-from .nodes.MultiTextEncode import MultiTextEncode
-from .nodes.KolorsMultiTextEncode import KolorsMultiTextEncode
+from .MultiTextEncode import MultiTextEncode
+from .KolorsMultiTextEncode import KolorsMultiTextEncode
 
 # A dictionary that contains all nodes you want to export with their names
 # NOTE: names should be globally unique
