@@ -17,7 +17,7 @@ class KolorsMultiTextEncode:
     FUNCTION = "encode"
     CATEGORY = "emojiiii"
 
-    def encode(self, chatglm3_model, text, pre_text='',app_text=''):
+    def encode(self, chatglm3_model, text):
                 # 换行符分割
         text_list = text.split('\n')
 
@@ -29,7 +29,7 @@ class KolorsMultiTextEncode:
         for i in range(len(text_list)):
             if text_list[i]=='' or text_list[i]=='\n':
                 continue
-            prompt_embeds, pooled_output = chatglm3_text_encode(chatglm3_model, pre_text+' '+text_list[i]+' '+app_text)
+            prompt_embeds, pooled_output = chatglm3_text_encode(self, chatglm3_model, prompt=text_list[i])
             cond_out.append(prompt_embeds)
             pooled_out.append(pooled_output)
         
