@@ -9,7 +9,7 @@ class KolorsMultiTextEncode:
             "required": {
                 "chatglm3_model": ("CHATGLM3MODEL", ),
                 "text": ("STRING", {"multiline": True, "dynamicPrompts": True}),
-                "linear": ("TorchLinear", ),
+                "hid_proj": ("TorchLinear", ),
             }
         }
 
@@ -18,7 +18,7 @@ class KolorsMultiTextEncode:
     FUNCTION = "encode"
     CATEGORY = "emojiiii"
 
-    def encode(self, chatglm3_model, text, linear):
+    def encode(self, chatglm3_model, text, hid_proj):
                 # 换行符分割
         text_list = text.split('\n')
 
@@ -32,11 +32,11 @@ class KolorsMultiTextEncode:
                 continue
             prompt_embeds, pooled_output = chatglm3_text_encode(self, chatglm3_model, prompt=text_list[i])\
                 
-            if linear.weight.dtype != prompt_embeds.dtype:
-                with torch.cuda.amp.autocast(dtype=linear.weight.dtype):
-                    prompt_embeds = linear(prompt_embeds)
+            if hid_proj.weight.dtype != prompt_embeds.dtype:
+                with torch.cuda.amp.autocast(dtype=hid_proj.weight.dtype):
+                    prompt_embeds = hid_proj(prompt_embeds)
             else:
-                prompt_embeds = linear(prompt_embeds)
+                prompt_embeds = hid_proj(prompt_embeds)
 
             cond_out.append(prompt_embeds)
             pooled_out.append(pooled_output)
