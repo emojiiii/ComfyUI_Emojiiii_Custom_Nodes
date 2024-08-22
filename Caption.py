@@ -3,7 +3,7 @@ import os
 
 from transformers import AutoProcessor, AutoModel, AutoTokenizer, PreTrainedTokenizer, PreTrainedTokenizerFast, AutoModelForCausalLM
 from .captioning.model import snapshot_download, hf_hub_download
-from .captioning.image import get_all_image_paths, write_caption_to_txt
+from .captioning.image import get_all_image_paths, write_caption_to_txt, load_image
 from .captioning.core import get_caption
 import comfy.model_management
 
@@ -28,7 +28,7 @@ class Caption:
     def INPUT_TYPES(s):
         return {
             "required": {
-                "image": ("IMAGE", ),
+                "image": ("STRING", {"multiline": False, "default": ""}),
                 "joy_model": ("JOY_MODEL", ),
                 "prompt":   ("STRING", {"multiline": True, "default": "A descriptive caption for this image"},),
                 "max_new_tokens":("INT", {"default": 300, "min": 10, "max": 1000, "step": 1}),
@@ -43,9 +43,15 @@ class Caption:
     RETURN_TYPES = ("STRING",)
     FUNCTION = "generate"
 
+    @classmethod
+    def VALIDATE_INPUTS(self, image):
+        if not os.path.exists(image):
+            return "Image path does not exist"
+        return True
+
     def generate(self, image, prompt: str, max_new_tokens: int, temperature: float, recursion: bool, **kwargs):
         device = comfy.model_management.get_torch_device()
-        
+
         joy_model = kwargs.get("joy_model")
         clip_path = joy_model.get("clip_path")
         model_path = joy_model.get("model_path")
@@ -71,13 +77,13 @@ class Caption:
         adjusted_adapter.to(device=device)
 
         text = ''
-        if recursion:
-            # 找到image同级的目录
+        if recursion & os.path.isdir(image):
             directory = os.path.dirname(image)
             all_image_paths = get_all_image_paths(directory)
             
             for image_path in all_image_paths:
-                temp = get_caption(image=image_path,
+                image_tr, = load_image(image_path)
+                temp = get_caption(image=image_tr,
                         prompt=prompt,
                         max_new_tokens=max_new_tokens,
                         temperature=temperature,
@@ -92,7 +98,8 @@ class Caption:
                 text += temp + '\n\n'
                 print(f"Caption for {image_path} is: {temp}")
         else:
-            text = get_caption(image=image,
+            image_tr, = load_image(image_path)
+            text = get_caption(image=image_tr,
                     prompt=prompt,
                     max_new_tokens=max_new_tokens,
                     temperature=temperature,

@@ -4,7 +4,7 @@ from transformers import PreTrainedTokenizer, PreTrainedTokenizerFast
 from .image import tensor2pil
 
 
-def get_caption(image: str, prompt: str, max_new_tokens: int, temperature: float, text_model, clip_processor, clip_model, tokenizer: PreTrainedTokenizer | PreTrainedTokenizerFast, image_adapter, device) -> str:
+def get_caption(image: torch.Tensor, prompt: str, max_new_tokens: int, temperature: float, text_model, clip_processor, clip_model, tokenizer: PreTrainedTokenizer | PreTrainedTokenizerFast, image_adapter, device) -> str:
 
     input_image = tensor2pil(image)
     pImge = clip_processor(images=input_image, return_tensors='pt').pixel_values.to(device=device)
