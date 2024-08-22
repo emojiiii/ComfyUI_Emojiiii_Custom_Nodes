@@ -1,6 +1,6 @@
 import torch
 
-from kolors.kolors_core import chatglm3_text_encode
+from .kolors.kolors_core import chatglm3_text_encode
 
 class KolorsMultiTextEncode:
     @classmethod
