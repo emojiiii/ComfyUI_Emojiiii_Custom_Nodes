@@ -2,10 +2,10 @@ import torch
 import os
 
 from transformers import AutoProcessor, AutoModel, AutoTokenizer, PreTrainedTokenizer, PreTrainedTokenizerFast, AutoModelForCausalLM
-from .model import snapshot_download, hf_hub_download
-from .image import load_image
-from ..files.file import get_all_image_paths, write_caption_to_txt
-from .core import get_caption
+from .captioning.model import snapshot_download, hf_hub_download
+from .captioning.image import load_image
+from .files.file import get_all_image_paths, write_caption_to_txt
+from .captioning.core import get_caption
 import comfy.model_management
 
 class ImageAdapter(torch.nn.Module):

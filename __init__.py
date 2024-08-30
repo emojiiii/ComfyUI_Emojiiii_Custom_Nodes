@@ -1,7 +1,7 @@
 from .MultiTextEncode import MultiTextEncode
 from .KolorsMultiTextEncode import KolorsMultiTextEncode
-from .captioning.Caption import Caption, CaptionDownload
-from .batch.BatchImageProcessor import BatchImageProcessor
+from .Caption import Caption, CaptionDownload
+from .BatchImageProcessor import BatchImageProcessor
 
 # A dictionary that contains all nodes you want to export with their names
 # NOTE: names should be globally unique

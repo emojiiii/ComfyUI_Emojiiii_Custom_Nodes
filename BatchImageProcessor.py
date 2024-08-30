@@ -1,6 +1,6 @@
 import os
-from .image import crop_image
-from files.file import get_all_image_paths
+from .batch.image import crop_image
+from .files.file import get_all_image_paths
 
 class BatchImageProcessor:
     def __init__(self) -> None:
