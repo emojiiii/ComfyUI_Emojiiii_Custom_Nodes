@@ -2,9 +2,10 @@ import torch
 import os
 
 from transformers import AutoProcessor, AutoModel, AutoTokenizer, PreTrainedTokenizer, PreTrainedTokenizerFast, AutoModelForCausalLM
-from .captioning.model import snapshot_download, hf_hub_download
-from .captioning.image import get_all_image_paths, write_caption_to_txt, load_image
-from .captioning.core import get_caption
+from .model import snapshot_download, hf_hub_download
+from .image import load_image
+from files.file import get_all_image_paths, write_caption_to_txt
+from .core import get_caption
 import comfy.model_management
 
 class ImageAdapter(torch.nn.Module):
@@ -111,7 +112,6 @@ class Caption:
                     device=device
                     )
 
-        print("Caption: ", text)
         return (text)
 
     
@@ -144,9 +144,6 @@ class CaptionDownload:
                                            repo_type="space"
                                            )
 
-        print("Model Path: ", model_path)
-        print("Clip Path: ", clip_path)
-        print("Joy Caption Path: ", joy_caption_path)
         return ({"model_path": model_path, "clip_path": clip_path, "joy_caption_path": joy_caption_path},)
 
 
