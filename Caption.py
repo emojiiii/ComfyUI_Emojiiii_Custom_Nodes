@@ -90,7 +90,7 @@ class Caption:
             all_image_paths = get_all_image_paths(directory)
             
             for image_path in all_image_paths:
-                image_tr, = load_image(image_path)
+                image_tr, mask = load_image(image_path)
                 temp = get_caption(image=image_tr,
                         prompt=prompt,
                         max_new_tokens=max_new_tokens,
@@ -106,7 +106,7 @@ class Caption:
                 text += temp + '\n\n'
                 print(f"Caption for {image_path} is: {temp}")
         else:
-            image_tr, = load_image(image_path)
+            image_tr, mask = load_image(image_path)
             text = get_caption(image=image_tr,
                     prompt=prompt,
                     max_new_tokens=max_new_tokens,
