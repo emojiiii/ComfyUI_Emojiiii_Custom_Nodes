@@ -29,11 +29,7 @@ class BatchImageProcessor:
     def batch_image_process(self, image_dir, width, height, auto_face, quality, output_dir, format):
         
         if output_dir == "" or output_dir == None:
-            # check image_dir is a directory or a file
-            if os.path.isfile(image_dir):
-                output_dir = os.path.dirname(image_dir)
-            else:
-                output_dir = os.path.join(image_dir, "output")
+            output_dir = os.path.join(os.path.dirname(image_dir), "output")
 
         # Check if the output directory exists
         if not os.path.exists(output_dir):

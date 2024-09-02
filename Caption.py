@@ -119,7 +119,7 @@ class Caption:
                     device=device
                     )
 
-        return (text)
+        return (text, )
 
     
 class CaptionDownload:
@@ -131,6 +131,7 @@ class CaptionDownload:
         return {
             "required": {
                 "model": (["unsloth/Meta-Llama-3.1-8B-bnb-4bit", "meta-llama/Meta-Llama-3.1-8B"], ),
+                "siglip_model": (["google/siglip-so400m-patch14-384", "google/siglip-so400m-patch14-224"], ),
             }
         }
     
@@ -138,11 +139,11 @@ class CaptionDownload:
     FUNCTION = "download"
     RETURN_TYPES = ("JOY_MODEL",)
 
-    def download(self, model):
+    def download(self, model: str, siglip_model: str):
 
         model_path = snapshot_download(model, 'LLM')
 
-        clip_path = snapshot_download("google/siglip-so400m-patch14-384", "clip")
+        clip_path = snapshot_download(siglip_model, "clip")
 
         joy_caption_path = hf_hub_download(repo_id="fancyfeast/joy-caption-pre-alpha",
                                            filename="image_adapter.pt",
