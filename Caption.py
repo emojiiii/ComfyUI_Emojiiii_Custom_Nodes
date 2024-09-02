@@ -79,7 +79,7 @@ class Caption:
         text_model.eval()
 
         image_adapter = ImageAdapter(clip_model.config.hidden_size, text_model.config.hidden_size) # ImageAdapter(clip_model.config.hidden_size, 4096) 
-        image_adapter.load_state_dict(torch.load(adapter_path, map_location="cpu"))
+        image_adapter.load_state_dict(torch.load(adapter_path, map_location="cpu", weights_only=True))
         adjusted_adapter =  image_adapter #AdjustedImageAdapter(image_adapter, text_model.config.hidden_size)
         adjusted_adapter.eval()
         adjusted_adapter.to(device=device)
