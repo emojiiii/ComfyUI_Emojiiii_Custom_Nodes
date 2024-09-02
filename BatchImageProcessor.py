@@ -18,7 +18,7 @@ class BatchImageProcessor:
             },
             "optional": {
                 "output_dir": ("STRING", {"multiline": False, "default": ""}),
-                "format": (["jpeg", "png", "jpg"], {"default": ""}),
+                "format": (["normal", "jpeg", "png", "jpg"], {"default": "normal"}),
             }
         }
 
@@ -39,6 +39,9 @@ class BatchImageProcessor:
         if not os.path.exists(image_dir):
             # throw an error if the input directory does not exist
             raise Exception("Input directory does not exist")
+        
+        if format == "normal":
+            format = None
         
         # Check image_dir is a directory or a file
         if os.path.isfile(image_dir):
