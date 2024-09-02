@@ -86,8 +86,7 @@ class Caption:
 
         text = ''
         if os.path.isdir(image_dir):
-            directory = os.path.dirname(image_dir)
-            all_image_paths = get_all_image_paths(directory)
+            all_image_paths = get_all_image_paths(image_dir)
             
             for image_path in all_image_paths:
                 image_tr, mask = load_image(image_path)
