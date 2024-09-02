@@ -1,6 +1,6 @@
 import torch
 
-from .kolors_core import chatglm3_text_encode
+from .kolors.kolors_core import chatglm3_text_encode
 
 class KolorsMultiTextEncode:
     @classmethod
@@ -19,7 +19,6 @@ class KolorsMultiTextEncode:
     CATEGORY = "emojiiii"
 
     def encode(self, chatglm3_model, text, hid_proj):
-                # 换行符分割
         text_list = text.split('\n')
 
         if len(text_list)==0:
