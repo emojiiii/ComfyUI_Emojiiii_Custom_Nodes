@@ -30,7 +30,8 @@ def crop_image(image_path, output_path, width=None, height=None, crop_face=False
         faces = detect_faces(img_cv)
         
         if len(faces) == 0:
-            print("No faces detected.")
+            print(f"No faces detected: {image_path}")
+            center_x, center_y = img.width // 2, img.height // 2
             return
         
         # Assume the first face is the one we want to crop around

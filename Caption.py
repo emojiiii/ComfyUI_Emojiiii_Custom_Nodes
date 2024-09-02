@@ -8,6 +8,13 @@ from .files.file import get_all_image_paths, write_caption_to_txt
 from .captioning.core import get_caption
 import comfy.model_management
 
+class AlwaysEqualProxy(str):
+    def __eq__(self, _):
+        return True
+
+    def __ne__(self, _):
+        return False
+
 class ImageAdapter(torch.nn.Module):
 	def __init__(self, input_features: int, output_features: int):
 		super().__init__()
@@ -29,14 +36,14 @@ class Caption:
     def INPUT_TYPES(s):
         return {
             "required": {
-                "image": ("STRING", {"multiline": False, "default": ""}),
+                "image_dir": ("STRING", {"multiline": False, "default": ""}),
                 "joy_model": ("JOY_MODEL", ),
                 "prompt":   ("STRING", {"multiline": True, "default": "A descriptive caption for this image"},),
                 "max_new_tokens":("INT", {"default": 300, "min": 10, "max": 1000, "step": 1}),
                 "temperature": ("FLOAT", {"default": 0.5, "min": 0.0, "max": 1.0, "step": 0.01}),
             },
             "optional": {
-                "recursion": ("BOOLEAN", {"default": False}),
+                "default_image_dir": (AlwaysEqualProxy("*"), {})
             }
         }
     
@@ -44,13 +51,13 @@ class Caption:
     RETURN_TYPES = ("STRING",)
     FUNCTION = "generate"
 
-    @classmethod
-    def VALIDATE_INPUTS(self, image):
-        if not os.path.exists(image):
-            return "Image path does not exist"
-        return True
+    def generate(self, image_dir: str, prompt: str, max_new_tokens: int, temperature: float, default_image_dir: str, **kwargs):
+        if image_dir == "" or image_dir == None:
+            image_dir = default_image_dir
 
-    def generate(self, image, prompt: str, max_new_tokens: int, temperature: float, recursion: bool, **kwargs):
+        if not os.path.exists(image_dir):
+            raise Exception("Image path does not exist")
+       
         device = comfy.model_management.get_torch_device()
 
         joy_model = kwargs.get("joy_model")
@@ -78,8 +85,8 @@ class Caption:
         adjusted_adapter.to(device=device)
 
         text = ''
-        if recursion & os.path.isdir(image):
-            directory = os.path.dirname(image)
+        if os.path.isdir(image_dir):
+            directory = os.path.dirname(image_dir)
             all_image_paths = get_all_image_paths(directory)
             
             for image_path in all_image_paths:

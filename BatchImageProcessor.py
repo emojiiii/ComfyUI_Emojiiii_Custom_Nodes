@@ -28,9 +28,8 @@ class BatchImageProcessor:
 
     def batch_image_process(self, image_dir, width, height, auto_face, quality, output_dir, format):
         
-        # Check output_dir is provided
-        if not output_dir:
-            output_dir = image_dir + "_cropped"
+        if output_dir == "" or output_dir == None:
+            output_dir = os.path.join(os.path.dirname(image_dir), "output")
 
         # Check if the output directory exists
         if not os.path.exists(output_dir):
@@ -49,7 +48,7 @@ class BatchImageProcessor:
             
             # Crop the image
             crop_image(image_path=image_dir, output_path=output_dir, width=width, height=height, crop_face=auto_face, format=format, quality=quality)
-            return (output_dir,)
+            return (os.path.dirname(output_dir),)
         
         # Get the list of images in the input directory
         images = os.listdir(image_dir)
@@ -57,7 +56,7 @@ class BatchImageProcessor:
 
         for image in images:
             image_path = os.path.join(image_dir, image)
-            output_path = os.path.join(output_dir, image)
+            output_path = os.path.join(output_dir, os.path.basename(image))
             crop_image(image_path=image_path, output_path=output_path, width=width, height=height, crop_face=auto_face, format=format, quality=quality)
         
         return (output_dir,)
