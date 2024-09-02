@@ -32,13 +32,12 @@ def crop_image(image_path, output_path, width=None, height=None, crop_face=False
         if len(faces) == 0:
             print(f"No faces detected: {image_path}")
             center_x, center_y = img.width // 2, img.height // 2
-            return
-        
-        # Assume the first face is the one we want to crop around
-        x, y, w, h = faces[0]
-        
-        # Calculate the center of the face
-        center_x, center_y = x + w // 2, y + h // 2
+        else:
+            # Assume the first face is the one we want to crop around
+            x, y, w, h = faces[0]
+            
+            # Calculate the center of the face
+            center_x, center_y = x + w // 2, y + h // 2
     else:
         # If not cropping by face, use the center of the image
         center_x, center_y = img.width // 2, img.height // 2
