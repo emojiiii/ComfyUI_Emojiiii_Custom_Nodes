@@ -1,7 +1,7 @@
 [project]
 name = "comfyui_emojiiii_custom_nodes"
-description = "Nodes:MultiTextEncode, KolorsMultiTextEncode"
-version = "1.0.0"
+description = "Nodes:MultiTextEncode, KolorsMultiTextEncode, Caption, BatchImageProcessor"
+version = "1.1.0"
 license = { file = "LICENSE" }
 
 [project.urls]
